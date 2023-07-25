@@ -17,11 +17,17 @@ pipeline {
             }
         }
         stage('package') {
+            when {
+               branch 'main'
+            }
             steps {
                 sh ''' mvn package '''
             }
         }
         stage('nexusuploder'){
+            when {
+               branch 'main'
+            }
             steps {
                 nexusArtifactUploader artifacts: [[artifactId: 'sample', classifier: '', file: 'target/sparkjava-hello-world-1.0.war', type: 'war']], credentialsId: 'nexu_ram', groupId: 'maven', nexusUrl: '54.224.139.231:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'java', version: '2.1.$BUILD_NUMBER'
             }
